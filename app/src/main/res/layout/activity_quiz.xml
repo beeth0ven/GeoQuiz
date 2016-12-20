@@ -35,13 +35,24 @@
             />
     </LinearLayout>
 
-    <Button
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/next_button"
-        android:id="@+id/next_button"
-        android:layout_gravity="center_horizontal"
-        android:drawableRight="@drawable/arrow_right"
-        android:drawablePadding="4dp"
-        />
+        android:gravity="center">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/prev_button"
+            android:src="@drawable/arrow_left" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/next_button"
+            android:src="@drawable/arrow_right"
+            android:longClickable="false" />
+    </LinearLayout>
+
 </LinearLayout>
