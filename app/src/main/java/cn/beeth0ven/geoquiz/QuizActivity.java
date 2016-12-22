@@ -60,7 +60,7 @@ public class QuizActivity extends AppCompatActivity {
             }
         });
 
-//        mTextView = (TextView) findViewById(R.id.question_text_view);
+        mTextView = (TextView) findViewById(R.id.question_text_view);
         updateQuestion();
     }
 
