@@ -13,8 +13,8 @@ public class CheatActivity extends AppCompatActivity {
     private static final String EXTRA_ANSWER_IS_TRUE = "cn.beeth0ven.geoquiz.answer_is_true";
     private static final String EXTRA_ANSWER_SHOWN = "cn.beeth0ven.geoquiz.answer_shown";
 
-
     private boolean mAnswerIsTrue;
+    private boolean mIsShowAnswerButtonTapped = false;
 
     private TextView mAnswerTextView;
     private Button mShowAnswerButton;
@@ -43,8 +43,22 @@ public class CheatActivity extends AppCompatActivity {
             public void onClick(View v) {
                 mAnswerTextView.setText(mAnswerIsTrue ? R.string.true_button : R.string.false_button);
                 setAnswerShownResult(true);
+                mIsShowAnswerButtonTapped = true;
             }
         });
+
+        if (savedInstanceState == null) { return; }
+        mIsShowAnswerButtonTapped = savedInstanceState.getBoolean("mIsShowAnswerButtonTapped", false);
+        if (mIsShowAnswerButtonTapped) {
+            mAnswerTextView.setText(mAnswerIsTrue ? R.string.true_button : R.string.false_button);
+            setAnswerShownResult(true);
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean("mIsShowAnswerButtonTapped", mIsShowAnswerButtonTapped);
     }
 
     private void setAnswerShownResult(boolean isAnswerShown) {

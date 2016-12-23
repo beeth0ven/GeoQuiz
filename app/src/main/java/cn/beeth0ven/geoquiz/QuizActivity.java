@@ -22,7 +22,6 @@ public class QuizActivity extends AppCompatActivity {
     private TextView mTextView;
 
     private int mQuestionIndex = 0;
-    private boolean mIsCheater;
 
     private Question[] mQuestions = new Question[] {
             new Question(R.string.question_oceans, true),
@@ -30,6 +29,21 @@ public class QuizActivity extends AppCompatActivity {
             new Question(R.string.question_americas, true),
             new Question(R.string.question_asia, true)
     };
+
+    private boolean[] mIsCheaters = new boolean[] {
+            false,
+            false,
+            false,
+            false
+    };
+
+    private boolean getCurrentIsCheater() {
+        return mIsCheaters[mQuestionIndex];
+    }
+
+    private void setCurrentIsCheater(boolean isCheater) {
+        mIsCheaters[mQuestionIndex] = isCheater;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +72,6 @@ public class QuizActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 increaseQuestionIndex();
-                mIsCheater = false;
                 updateQuestion();
             }
         });
@@ -78,6 +91,7 @@ public class QuizActivity extends AppCompatActivity {
 
         if (savedInstanceState != null) {
             mQuestionIndex = savedInstanceState.getInt("mQuestionIndex", 0);
+            mIsCheaters = savedInstanceState.getBooleanArray("mIsCheaters");
         }
 
         updateQuestion();
@@ -89,7 +103,7 @@ public class QuizActivity extends AppCompatActivity {
 
         if (requestCode == REQUEST_CODE_CHEAT) {
             if (data == null) { return; }
-            mIsCheater = CheatActivity.wasAnswerShown(data);
+            setCurrentIsCheater(CheatActivity.wasAnswerShown(data));
         }
     }
 
@@ -97,14 +111,13 @@ public class QuizActivity extends AppCompatActivity {
         mQuestionIndex = (mQuestionIndex + 1) % mQuestions.length;
     }
 
-
     private void updateQuestion() {
         mTextView.setText(mQuestions[mQuestionIndex].getTextResId());
     }
 
     private void checkAnswer(boolean isTrue) {
 
-        int stringId = mIsCheater ?
+        int stringId = getCurrentIsCheater() ?
                 R.string.judgment_toast :
                 mQuestions[mQuestionIndex].isAnswerTrue() == isTrue ?
                         R.string.correct_toast :
@@ -122,6 +135,7 @@ public class QuizActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
         Log.d(TAG, "onSaveInstanceState");
         outState.putInt("mQuestionIndex", mQuestionIndex);
+        outState.putBooleanArray("mIsCheaters", mIsCheaters);
     }
 
     @Override
